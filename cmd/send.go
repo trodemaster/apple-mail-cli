@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/blakemcanally/apple-mail-cli/internal/mail"
-	"github.com/blakemcanally/apple-mail-cli/internal/output"
+	"github.com/trodemaster/apple-mail-cli/internal/mail"
+	"github.com/trodemaster/apple-mail-cli/internal/output"
 	"github.com/spf13/cobra"
 )
 

@@ -1,4 +1,4 @@
-module github.com/blakemcanally/apple-mail-cli
+module github.com/trodemaster/apple-mail-cli
 
 go 1.26.1
 

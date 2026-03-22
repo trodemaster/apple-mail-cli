@@ -1,6 +1,6 @@
 package main
 
-import "github.com/blakemcanally/apple-mail-cli/cmd"
+import "github.com/trodemaster/apple-mail-cli/cmd"
 
 func main() {
 	cmd.Execute()
