@@ -1,0 +1,12 @@
+{
+  "name": "apple-mail",
+  "version": "1.0.0",
+  "description": "Read and manage Apple Mail.app on macOS Apple Silicon. List accounts, browse mailboxes, list/read/search messages, send email, and manage filter rules via the bundled amail CLI. No credentials, no IMAP, no API keys.",
+  "author": {
+    "name": "trodemaster"
+  },
+  "homepage": "https://github.com/trodemaster/apple-mail-cli",
+  "repository": "https://github.com/trodemaster/apple-mail-cli",
+  "license": "MIT",
+  "keywords": ["apple-mail", "email", "macos", "apple-silicon"]
+}

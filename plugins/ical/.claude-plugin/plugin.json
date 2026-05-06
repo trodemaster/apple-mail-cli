@@ -1,0 +1,12 @@
+{
+  "name": "ical",
+  "version": "1.0.0",
+  "description": "Read Apple Calendar events and calendars on macOS Apple Silicon. List calendars, query events by date range, view today or upcoming events via the bundled aical CLI. Read-only, no credentials required.",
+  "author": {
+    "name": "trodemaster"
+  },
+  "homepage": "https://github.com/trodemaster/apple-mail-cli",
+  "repository": "https://github.com/trodemaster/apple-mail-cli",
+  "license": "MIT",
+  "keywords": ["calendar", "ical", "events", "macos", "apple-silicon"]
+}

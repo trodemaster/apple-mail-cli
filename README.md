@@ -1,20 +1,38 @@
-# amail
+# apple-mail-cli
 
-A command-line interface for Apple Mail.app on macOS. Reads and manages your email — accounts, mailboxes, messages, and filter rules — via Apple Events (no credentials, no IMAP, no API keys).
+A Claude Code plugin marketplace with two read-only macOS automation tools. Both target macOS 13+ Apple Silicon (arm64) only and communicate with Apple apps via Apple Events — no credentials, no network access, no API keys.
 
-## Requirements
+| Plugin | Binary | What it does |
+|--------|--------|--------------|
+| `apple-mail` | `amail` | Read and manage Mail.app — accounts, mailboxes, messages, rules, send |
+| `ical` | `aical` | Read Calendar.app — calendars and events with date-range filtering |
 
-- macOS with Mail.app configured
-- Go 1.21+ (to build)
-- On first run, macOS will prompt for automation permission — click **Allow**
+**Platform:** macOS 13+ · Apple Silicon (arm64) only
 
-## Install
+## Install via Claude Code
+
+Add this marketplace to Claude Code, then install the plugin(s) you want:
 
 ```sh
-make        # build, sign (ad-hoc), and install to $GOBIN
+/plugin marketplace add trodemaster/apple-mail-cli
+/plugin install apple-mail@amail-plugins
+/plugin install ical@amail-plugins
 ```
 
-## Commands
+Each plugin ships a pre-built, ad-hoc-signed arm64 binary in its `bin/` directory. The plugin system adds it to PATH automatically — no manual setup required. On first use, macOS will prompt for automation permission — click **Allow**.
+
+## Build from source
+
+Requires Go 1.21+ and macOS Apple Silicon.
+
+```sh
+make              # build, sign (ad-hoc), and install both binaries to $GOBIN
+make skill        # cross-compile both arm64 plugin binaries and sign them
+make skill-mail   # apple-mail plugin only
+make skill-ical   # ical plugin only
+```
+
+## amail commands
 
 ### Accounts
 
@@ -97,9 +115,40 @@ amail schema
 
 Emits the full JSON spec of every command, subcommand, flag, type, and default. Useful for agents and scripting.
 
+## aical commands
+
+### Calendars
+
+```sh
+aical calendars
+```
+
+Lists all calendars with id, name, writable flag, and description.
+
+### Events
+
+```sh
+# Events for the next 7 days (default)
+aical events
+
+# Just today
+aical events --today
+
+# Specific date range
+aical events --from 2026-05-01 --to 2026-05-31
+
+# Relative window
+aical events --days 14
+
+# Filter to one calendar
+aical events --calendar "Work" --days 30 [--limit 100]
+```
+
+Flags: `--calendar NAME`, `--from YYYY-MM-DD`, `--to YYYY-MM-DD`, `--today`, `--days N` (default 7), `--limit N` (default 50), `--format json`, `--pretty`
+
 ## Output
 
-All commands print a human-readable table by default. When piped or when `--format json` is passed, output is a JSON envelope:
+All commands (`amail` and `aical`) print a human-readable table by default. When piped or when `--format json` is passed, output is a JSON envelope:
 
 ```json
 {
@@ -119,12 +168,41 @@ amail rules list --format json | jq '.data[] | select(.actions.moveToMailbox == 
 
 ## How it works
 
-`amail` shells out to `osascript` and communicates with Mail.app via Apple Events. No network connections, no credential storage — it reads and writes the same data Mail.app shows you.
+Both binaries shell out to `osascript` and communicate with macOS apps via Apple Events. No network connections, no credential storage — they read the same data the apps show you.
 
-The binary is ad-hoc codesigned with the `com.apple.security.automation.apple-events` entitlement so macOS grants it automation access.
+Each binary is ad-hoc codesigned with the `com.apple.security.automation.apple-events` entitlement so macOS grants automation access without a Developer ID.
 
-## Claude skill
+## Repository structure
 
-A Claude Code skill lives at `.claude/skills/apple-mail/SKILL.md`. It gives Claude full coverage of all commands and the domain-routing workflow, optimised for agent use.
+```
+apple-mail-cli/
+├── .claude-plugin/
+│   └── marketplace.json          # Root marketplace catalog (lists both plugins)
+├── plugins/
+│   ├── apple-mail/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json       # Plugin manifest
+│   │   ├── bin/
+│   │   │   └── amail             # Pre-built arm64 binary (auto-added to PATH)
+│   │   └── skills/apple-mail/
+│   │       └── SKILL.md          # Skill instructions
+│   └── ical/
+│       ├── .claude-plugin/
+│       │   └── plugin.json
+│       ├── bin/
+│       │   └── aical             # Pre-built arm64 binary (auto-added to PATH)
+│       └── skills/ical/
+│           └── SKILL.md
+├── cmd/                          # amail cobra commands
+├── ical/                         # aical binary entrypoint + cobra commands
+├── internal/
+│   ├── mail/                     # AppleScript runners + typed ops for Mail.app
+│   └── ical/                     # AppleScript runners + typed ops for Calendar.app
+└── Makefile
+```
 
-AppleScript + Go compatibility notes (quoting rules, known Mail.app scripting bugs, performance patterns) are documented in `.claude/skills/apple-mail/GO-APPLESCRIPT-NOTES.md`.
+To rebuild the bundled binaries after source changes:
+
+```sh
+make skill
+```

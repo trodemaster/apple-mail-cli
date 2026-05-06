@@ -1,0 +1,26 @@
+{
+  "name": "amail-plugins",
+  "description": "Apple Mail and Calendar CLI plugins for Claude Code on macOS Apple Silicon.",
+  "owner": {
+    "name": "trodemaster"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "apple-mail",
+      "source": "./plugins/apple-mail",
+      "description": "Read and manage Apple Mail.app — list accounts, browse mailboxes, list/read/search messages, send email, and manage filter rules.",
+      "keywords": ["email", "apple-mail", "macos", "apple-silicon"],
+      "category": "productivity"
+    },
+    {
+      "name": "ical",
+      "source": "./plugins/ical",
+      "description": "Read Apple Calendar events and calendars — list calendars, query events by date range, view today or upcoming events.",
+      "keywords": ["calendar", "ical", "events", "macos", "apple-silicon"],
+      "category": "productivity"
+    }
+  ]
+}
