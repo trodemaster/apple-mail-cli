@@ -4,6 +4,8 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"os/exec"
+	"strings"
 )
 
 //go:embed scripts/messages_list.applescript
@@ -93,6 +95,19 @@ func ReadMessage(messageID string) (*Message, error) {
 		return nil, fmt.Errorf("parse message: %w (raw: %s)", err, out)
 	}
 	return &msg, nil
+}
+
+func OpenMessage(messageID string) error {
+	// Use the message: URL scheme for a direct indexed lookup instead of
+	// scanning all mailboxes via AppleScript, which hangs on large accounts.
+	url := "message://%3C" + messageID + "%3E"
+	out, err := exec.Command("open", url).CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("open message: %s: %w", strings.TrimSpace(string(out)), err)
+	}
+	// Bring Mail.app to the front.
+	_, _ = exec.Command("osascript", "-e", `tell application "Mail" to activate`).Output()
+	return nil
 }
 
 func SearchMessages(p SearchMessagesParams) ([]Message, error) {

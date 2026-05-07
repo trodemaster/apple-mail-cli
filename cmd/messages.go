@@ -106,6 +106,26 @@ var messagesReadCmd = &cobra.Command{
 	},
 }
 
+// --- open ---
+
+var messagesOpenCmd = &cobra.Command{
+	Use:   "open <message-id>",
+	Short: "Open a message in Mail.app",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if err := mail.OpenMessage(args[0]); err != nil {
+			output.PrintError("messages open", "executionFailed", err.Error(), prettyFlag)
+			return nil
+		}
+		if isJSON(cmd) {
+			output.PrintJSON("messages open", map[string]string{"id": args[0], "status": "opened"}, prettyFlag)
+			return nil
+		}
+		fmt.Println("Opened in Mail.app")
+		return nil
+	},
+}
+
 // --- search ---
 
 var (
@@ -205,6 +225,7 @@ func init() {
 
 	messagesCmd.AddCommand(messagesListCmd)
 	messagesCmd.AddCommand(messagesReadCmd)
+	messagesCmd.AddCommand(messagesOpenCmd)
 	messagesCmd.AddCommand(messagesSearchCmd)
 	rootCmd.AddCommand(messagesCmd)
 }

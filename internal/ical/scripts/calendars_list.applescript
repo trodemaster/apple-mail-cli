@@ -29,7 +29,12 @@ tell application "Calendar"
 	repeat with i from 1 to calCount
 		set cal to item i of cals
 		set calName to name of cal
-		set calID to calendarIdentifier of cal
+		set calID to ""
+		try
+			set calID to calendarIdentifier of cal
+		on error
+			set calID to calName
+		end try
 		set calWritable to writable of cal
 		set calDesc to ""
 		try

@@ -30,9 +30,21 @@ func RunScript(script string) (string, error) {
 	return strings.TrimSpace(stdout.String()), nil
 }
 
+// asLiteral converts a Go string into a valid AppleScript string expression,
+// escaping embedded double-quote characters using (ASCII character 34).
+func asLiteral(s string) string {
+	parts := strings.Split(s, `"`)
+	pieces := make([]string, len(parts))
+	for i, p := range parts {
+		pieces[i] = `"` + p + `"`
+	}
+	return strings.Join(pieces, ` & (ASCII character 34) & `)
+}
+
 // RenderScript renders a text/template with data and runs it via osascript.
 func RenderScript(scriptTmpl string, data interface{}) (string, error) {
-	tmpl, err := template.New("script").Parse(scriptTmpl)
+	funcMap := template.FuncMap{"asLiteral": asLiteral}
+	tmpl, err := template.New("script").Funcs(funcMap).Parse(scriptTmpl)
 	if err != nil {
 		return "", fmt.Errorf("template parse: %w", err)
 	}

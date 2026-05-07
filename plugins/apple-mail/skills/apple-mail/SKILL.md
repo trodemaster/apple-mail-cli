@@ -71,6 +71,14 @@ amail messages read <message-id>
 
 Returns: `id`, `subject`, `sender`, `date`, `read`, `flagged`, `body`, `attachments[]`
 
+## Open a message in Mail.app
+
+```
+amail messages open <message-id>
+```
+
+Opens the message in a Mail.app viewer window and brings Mail.app to the front. Use this when the user wants to view or act on a specific message in the Mail.app GUI rather than reading it in the terminal.
+
 ## Search messages
 
 ```
