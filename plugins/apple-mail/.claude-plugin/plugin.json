@@ -1,6 +1,5 @@
 {
   "name": "apple-mail",
-  "version": "1.1.0",
   "description": "Read and manage Apple Mail.app on macOS. List accounts, browse mailboxes, list/read/search messages, send email, and manage filter rules via the bundled amail CLI. No credentials, no IMAP, no API keys.",
   "author": {
     "name": "trodemaster"
