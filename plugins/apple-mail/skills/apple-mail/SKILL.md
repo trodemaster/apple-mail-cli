@@ -1,17 +1,17 @@
 ---
 name: apple-mail
-description: "Read and manage Apple Mail.app on macOS Apple Silicon. Use when the user asks about their email, wants to read or find messages, check unread mail, list accounts or mailboxes, send an email, route a domain to a folder, create or apply filter rules, or anything related to Mail.app or email on macOS. Requires: macOS on Apple Silicon (arm64)."
+description: "Read and manage Apple Mail.app on macOS. Use when the user asks about their email, wants to read or find messages, check unread mail, list accounts or mailboxes, send an email, route a domain to a folder, create or apply filter rules, or anything related to Mail.app or email on macOS. Requires: macOS 13+."
 argument-hint: "email task — e.g. 'show unread', 'find emails from X', 'send to Y'"
 allowed-tools: Bash(amail *)
 ---
 
 # apple-mail
 
-Interact with Apple Mail.app via the bundled `amail` CLI (Apple Silicon arm64 binary, no credentials, no IMAP, no API keys). The plugin system automatically adds `amail` to PATH — no manual setup required.
+Interact with Apple Mail.app via the bundled `amail` CLI (universal binary, no credentials, no IMAP, no API keys). The plugin system automatically adds `amail` to PATH — no manual setup required.
 
 ## Requirements
 
-- macOS 13+ on Apple Silicon (arm64)
+- macOS 13+ (Intel or Apple Silicon)
 - Mail.app open and running
 - Plugin installed via the Claude Code marketplace
 

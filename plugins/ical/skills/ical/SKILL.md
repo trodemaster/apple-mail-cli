@@ -1,17 +1,17 @@
 ---
 name: ical
-description: "Read and manage Apple Calendar.app events on macOS Apple Silicon. Use when the user asks about their schedule, wants to see upcoming events, create a new event, update or delete an existing event, accept/decline invites, check what's on today, find events in a date range, or list their calendars. Requires: macOS on Apple Silicon (arm64)."
+description: "Read and manage Apple Calendar.app events on macOS. Use when the user asks about their schedule, wants to see upcoming events, create a new event, update or delete an existing event, accept/decline invites, check what's on today, find events in a date range, or list their calendars. Requires: macOS 13+."
 argument-hint: "calendar task — e.g. 'what's on today', 'create meeting Friday 2pm', 'open invite to accept it'"
 allowed-tools: Bash(aical *)
 ---
 
 # ical
 
-Full management of Apple Calendar.app via the bundled `aical` CLI (Apple Silicon arm64, no credentials, no CalDAV API keys). The plugin system adds `aical` to PATH automatically.
+Full management of Apple Calendar.app via the bundled `aical` CLI (universal binary, no credentials, no CalDAV API keys). The plugin system adds `aical` to PATH automatically.
 
 ## Requirements
 
-- macOS 13+ on Apple Silicon (arm64)
+- macOS 13+ (Intel or Apple Silicon)
 - Calendar.app open and running
 - Plugin installed via the Claude Code marketplace
 

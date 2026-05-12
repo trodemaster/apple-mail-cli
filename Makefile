@@ -30,17 +30,27 @@ install: sign
 ## skill: build and sign both plugin binaries
 skill: skill-mail skill-ical
 
-## skill-mail: cross-compile arm64 amail binary into plugins/apple-mail/bin/ and sign it
+## skill-mail: cross-compile universal amail binary into plugins/apple-mail/bin/ and sign it
 skill-mail:
 	mkdir -p $(PLUGIN_MAIL)
-	GOOS=darwin GOARCH=arm64 go build -o $(PLUGIN_MAIL)/$(BINARY_MAIL) .
+	GOOS=darwin GOARCH=arm64 go build -o $(PLUGIN_MAIL)/$(BINARY_MAIL)_arm64 .
+	GOOS=darwin GOARCH=amd64 go build -o $(PLUGIN_MAIL)/$(BINARY_MAIL)_amd64 .
+	lipo -create -output $(PLUGIN_MAIL)/$(BINARY_MAIL) \
+		$(PLUGIN_MAIL)/$(BINARY_MAIL)_arm64 \
+		$(PLUGIN_MAIL)/$(BINARY_MAIL)_amd64
+	rm $(PLUGIN_MAIL)/$(BINARY_MAIL)_arm64 $(PLUGIN_MAIL)/$(BINARY_MAIL)_amd64
 	cp $(ENTITLE) $(PLUGIN_MAIL)/$(ENTITLE)
 	codesign --sign - --force --entitlements $(ENTITLE) $(PLUGIN_MAIL)/$(BINARY_MAIL)
 
-## skill-ical: cross-compile arm64 aical binary into plugins/ical/bin/ and sign it
+## skill-ical: cross-compile universal aical binary into plugins/ical/bin/ and sign it
 skill-ical:
 	mkdir -p $(PLUGIN_ICAL)
-	GOOS=darwin GOARCH=arm64 go build -o $(PLUGIN_ICAL)/$(BINARY_ICAL) ./ical/
+	GOOS=darwin GOARCH=arm64 go build -o $(PLUGIN_ICAL)/$(BINARY_ICAL)_arm64 ./ical/
+	GOOS=darwin GOARCH=amd64 go build -o $(PLUGIN_ICAL)/$(BINARY_ICAL)_amd64 ./ical/
+	lipo -create -output $(PLUGIN_ICAL)/$(BINARY_ICAL) \
+		$(PLUGIN_ICAL)/$(BINARY_ICAL)_arm64 \
+		$(PLUGIN_ICAL)/$(BINARY_ICAL)_amd64
+	rm $(PLUGIN_ICAL)/$(BINARY_ICAL)_arm64 $(PLUGIN_ICAL)/$(BINARY_ICAL)_amd64
 	cp $(ENTITLE) $(PLUGIN_ICAL)/$(ENTITLE)
 	codesign --sign - --force --entitlements $(ENTITLE) $(PLUGIN_ICAL)/$(BINARY_ICAL)
 
